@@ -172,7 +172,7 @@ xmlns:maven="antlib:org.apache.maven.artifact.ant">
     <!-- packaging property set -->
     <property name="package.release" value="1"/>
     <property name="package.prefix" value="/opt"/>
-    <property name="package.conf.dir" value="/opt/${final.name}/etc"/>
+    <property name="package.conf.dir" value="/opt/${final.name}/conf"/>
     <property name="package.log.dir" value="/var/log/zookeeper"/>
     <property name="package.pid.dir" value="/var/run/zookeeper"/>
     <property name="package.var.dir" value="/var/lib/zookeeper"/>
