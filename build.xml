@@ -171,12 +171,12 @@ xmlns:maven="antlib:org.apache.maven.artifact.ant">
 
     <!-- packaging property set -->
     <property name="package.release" value="1"/>
-    <property name="package.prefix" value="/usr"/>
-    <property name="package.conf.dir" value="/etc/zookeeper"/>
+    <property name="package.prefix" value="/opt"/>
+    <property name="package.conf.dir" value="/opt/${final.name}/etc"/>
     <property name="package.log.dir" value="/var/log/zookeeper"/>
     <property name="package.pid.dir" value="/var/run/zookeeper"/>
     <property name="package.var.dir" value="/var/lib/zookeeper"/>
-    <property name="package.share.dir" value="/share/zookeeper"/>
+    <property name="package.share.dir" value="/opt/zookeeper/share"/>
     <property name="package.buildroot" value="/tmp/zookeeper_package_build_${user.name}"/>
     <property name="package.build.dir" value="/tmp/zookeeper_package_build_${user.name}/BUILD"/>
 
@@ -243,7 +243,7 @@ xmlns:maven="antlib:org.apache.maven.artifact.ant">
 
     <path id="package.classpath">
       <fileset dir="${ivy.package.lib}">
-        <include name="**/jdeb*.jar" />
+	      <include name="**/jdeb*.jar" />
       </fileset>
     </path>
 
@@ -1094,30 +1094,34 @@ xmlns:maven="antlib:org.apache.maven.artifact.ant">
         </filterchain>
       </copy>
       <deb destfile="${package.buildroot}/${name}_${version}-${package.release}_${os.arch}.deb" control="${package.build.dir}/zookeeper.control">
-        <tarfileset dir="${build.dir}/${final.name}/share/zookeeper" filemode="644" prefix="${package.prefix}/share/zookeeper">
+	      <tarfileset dir="${build.dir}/${final.name}/share/zookeeper" filemode="644" prefix="${package.prefix}/${final.name}/share">
           <include name="**" />
+	<exclude name="**/log4j-1.2.16*"/>
         </tarfileset>
-        <tarfileset dir="${build.dir}/${final.name}/bin" filemode="755" prefix="${package.prefix}/bin">
+	<tarfileset dir="${build.dir}/${final.name}/bin" filemode="755" prefix="${package.prefix}/${final.name}/bin">
           <include name="zkCli.sh" />
         </tarfileset>
-        <tarfileset dir="${build.dir}/${final.name}/sbin" filemode="755" prefix="${package.prefix}/sbin">
+	<tarfileset dir="${build.dir}/${final.name}/sbin" filemode="755" prefix="${package.prefix}/${final.name}/sbin">
           <include name="**.sh" />
         </tarfileset>
-        <tarfileset dir="${build.dir}/${final.name}/libexec" filemode="755" prefix="${package.prefix}/libexec">
+	<tarfileset dir="${build.dir}/${final.name}/libexec" filemode="755" prefix="${package.prefix}/${final.name}/libexec">
           <include name="zkEnv.sh" />
         </tarfileset>
-        <tarfileset dir="${build.dir}/c/build/${package.prefix}/include" prefix="${package.prefix}/include">
+	<tarfileset dir="${build.dir}/c/build/${package.prefix}/include" prefix="${package.prefix}/${final.name}/include">
           <include name="**" />
         </tarfileset> 
-        <tarfileset dir="${build.dir}/c/build/${package.prefix}/lib" filemode="755" prefix="${package.prefix}/lib">
-          <include name="**" />
+	<tarfileset dir="${build.dir}/c/build/${package.prefix}/lib" filemode="755" prefix="${package.prefix}/${final.name}/lib">
+		<include name="**"/>
         </tarfileset> 
         <tarfileset dir="${build.dir}/${final.name}/conf" filemode="644" prefix="${package.conf.dir}">
           <include name="**" />
+	<exclude name="**/log4j.properties"/>
         </tarfileset>
+  <!--
         <tarfileset dir="${build.dir}/${final.name}/src/packages/deb/init.d" filemode="755" prefix="/etc/init.d">
           <include name="**" />
-        </tarfileset>
+	</tarfileset>
+	-->
       </deb>
 
       <copy todir="${build.dir}/" flatten="true">
@@ -1286,9 +1290,10 @@ xmlns:maven="antlib:org.apache.maven.artifact.ant">
                dir="${basedir}" timeout="${test.timeout}"
                errorProperty="tests.failed" failureProperty="tests.failed">
           <sysproperty key="build.test.dir" value="${test.tmp.dir}" />
-          <sysproperty key="test.data.dir" value="${test.data.dir}" />
+	  <sysproperty key="test.data.dir" value="${test.data.dir}" />
+	  <!--
           <sysproperty key="log4j.configuration"
-                       value="file:${basedir}/conf/log4j.properties" />
+		       value="file:${basedir}/conf/log4j.properties" /> -->
           <!-- superDigest is used by the tests/main code. If this is not set
                as part of starting the jvm there is no guarantee that the static
                initializers in the java code will see this (esp when running
@@ -1523,9 +1528,10 @@ xmlns:maven="antlib:org.apache.maven.artifact.ant">
                maxmemory="${test.junit.maxmem}" dir="${basedir}" timeout="${test.timeout}"
                errorProperty="tests.failed" failureProperty="tests.failed">
             <sysproperty key="build.test.dir" value="${test.tmp.dir}" />
-            <sysproperty key="test.data.dir" value="${test.data.dir}" />
+	    <sysproperty key="test.data.dir" value="${test.data.dir}" />
+	    <!--
             <sysproperty key="log4j.configuration"
-                         value="file:${basedir}/conf/log4j.properties" />
+			 value="file:${basedir}/conf/log4j.properties" /> -->
             <classpath>
                 <pathelement path="${build.dir}/cobertura" />
                 <pathelement path="${lib.dir}/cobertura/cobertura.jar" />
@@ -1816,5 +1822,6 @@ xmlns:maven="antlib:org.apache.maven.artifact.ant">
        <delete dir=".settings" />
        <delete dir="${build.dir.eclipse}" />
      </target>
+
 
 </project>
