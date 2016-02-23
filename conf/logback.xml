@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- THIS FILE IS AUTO-GENERATED - DO NOT MODIFY IT! -->
+
+<configuration scan="true" scanPeriod="5 minutes">
+	<appender name="System.err" class="ch.qos.logback.core.ConsoleAppender" target="System.err" withJansi="true">
+		<encoder>
+			<pattern>%d{yy/MM/dd HH:mm:ss} %p %c{2}: %m%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="logfiles" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${zookeeper.log.dir}/${zookeeper.log.file}</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${zookeeper.log.dir}/${zookeeper.log.file}.%d{yyyy-MM-dd}</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{ISO8601} %p %c: %m%n</pattern>
+		</encoder>
+	</appender>
+
+	<root level="${zookeeper.root.logger}">
+		<appender-ref ref="logfiles" />
+	</root>
+</configuration>
