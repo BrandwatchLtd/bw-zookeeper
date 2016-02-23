@@ -34,7 +34,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.apache.log4j.Logger;
 import org.apache.zookeeper.AsyncCallback;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
@@ -49,10 +48,12 @@ import org.apache.zookeeper.server.quorum.Leader;
 import org.apache.zookeeper.test.ClientBase.CountdownWatcher;
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class FollowerResyncConcurrencyTest extends ZKTestCase {
-    private static final Logger LOG = Logger.getLogger(FollowerResyncConcurrencyTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FollowerResyncConcurrencyTest.class);
     public static final long CONNECTION_TIMEOUT = ClientTest.CONNECTION_TIMEOUT;
 
     private volatile int counter = 0;
@@ -87,7 +88,7 @@ public class FollowerResyncConcurrencyTest extends ZKTestCase {
 
         ZooKeeper zk1 =
                 createClient(qu.getPeer(1).peer.getClientPort(), watcher1);
-        LOG.info("zk1 has session id 0x" + Long.toHexString(zk1.getSessionId()));
+        LOG.info("zk1 has session id 0x{}", Long.toHexString(zk1.getSessionId()));
 
         final String resyncPath = "/resyncundernewepoch";
         zk1.create(resyncPath, null, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
@@ -112,19 +113,19 @@ public class FollowerResyncConcurrencyTest extends ZKTestCase {
                 + qu.getPeer(3).clientPort, ClientBase.CONNECTION_TIMEOUT));
 
         zk1 = createClient(qu.getPeer(1).peer.getClientPort(), watcher1);
-        LOG.info("zk1 has session id 0x" + Long.toHexString(zk1.getSessionId()));
+        LOG.info("zk1 has session id 0x{}", Long.toHexString(zk1.getSessionId()));
         
         assertNotNull("zk1 has data", zk1.exists(resyncPath, false));
 
         final ZooKeeper zk2 =
                 createClient(qu.getPeer(2).peer.getClientPort(), watcher2);
-        LOG.info("zk2 has session id 0x" + Long.toHexString(zk2.getSessionId()));
+        LOG.info("zk2 has session id 0x{}", Long.toHexString(zk2.getSessionId()));
 
         assertNotNull("zk2 has data", zk2.exists(resyncPath, false));
 
         final ZooKeeper zk3 =
             createClient(qu.getPeer(3).peer.getClientPort(), watcher3);
-        LOG.info("zk3 has session id 0x" + Long.toHexString(zk3.getSessionId()));
+        LOG.info("zk3 has session id 0x{}", Long.toHexString(zk3.getSessionId()));
 
         assertNotNull("zk3 has data", zk3.exists(resyncPath, false));
 
@@ -170,24 +171,24 @@ public class FollowerResyncConcurrencyTest extends ZKTestCase {
 
         /* Reusing the index variable to select a follower to connect to */
         index = (index == 1) ? 2 : 1;
-        LOG.info("Connecting to follower:" + index);
+        LOG.info("Connecting to follower: {}", index);
 
         qu.shutdown(index);
 
         final ZooKeeper zk3 =
             createClient(qu.getPeer(3).peer.getClientPort(), watcher3);
-        LOG.info("zk3 has session id 0x" + Long.toHexString(zk3.getSessionId()));
+        LOG.info("zk3 has session id 0x{}", Long.toHexString(zk3.getSessionId()));
 
         zk3.create("/mybar", null, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
 
         qu.restart(index);
         final ZooKeeper zk1 =
             createClient(qu.getPeer(index).peer.getClientPort(), watcher1);
-        LOG.info("zk1 has session id 0x" + Long.toHexString(zk1.getSessionId()));
+        LOG.info("zk1 has session id 0x{}", Long.toHexString(zk1.getSessionId()));
 
         final ZooKeeper zk2 =
             createClient(qu.getPeer(index).peer.getClientPort(), watcher2);
-        LOG.info("zk2 has session id 0x" + Long.toHexString(zk2.getSessionId()));
+        LOG.info("zk2 has session id 0x{}", Long.toHexString(zk2.getSessionId()));
         
         zk1.create("/first", new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
         Thread mytestfooThread = new Thread(new Runnable() {
@@ -334,19 +335,19 @@ public class FollowerResyncConcurrencyTest extends ZKTestCase {
 
         /* Reusing the index variable to select a follower to connect to */
         index = (index == 1) ? 2 : 1;
-        LOG.info("Connecting to follower:" + index);
+        LOG.info("Connecting to follower: {}", index);
 
         final ZooKeeper zk1 =
             createClient(qu.getPeer(index).peer.getClientPort(), watcher1);
-        LOG.info("zk1 has session id 0x" + Long.toHexString(zk1.getSessionId()));
+        LOG.info("zk1 has session id 0x{}", Long.toHexString(zk1.getSessionId()));
 
         final ZooKeeper zk2 =
             createClient(qu.getPeer(index).peer.getClientPort(), watcher2);
-        LOG.info("zk2 has session id 0x" + Long.toHexString(zk2.getSessionId()));
+        LOG.info("zk2 has session id 0x{}", Long.toHexString(zk2.getSessionId()));
 
         final ZooKeeper zk3 =
             createClient(qu.getPeer(3).peer.getClientPort(), watcher3);
-        LOG.info("zk3 has session id 0x" + Long.toHexString(zk3.getSessionId()));
+        LOG.info("zk3 has session id 0x{}", Long.toHexString(zk3.getSessionId()));
 
         zk1.create("/first", new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
         zk2.create("/mybar", null, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
@@ -414,7 +415,7 @@ public class FollowerResyncConcurrencyTest extends ZKTestCase {
                 qu.startThenShutdown(index);                                
                 runNow.set(true);
                 qu.restart(index);
-                LOG.info("Setting up server: " + index);
+                LOG.info("Setting up server: {}", index);
             }
         
             if(i>=1000 &&  i%2== 0) {
@@ -536,7 +537,7 @@ public class FollowerResyncConcurrencyTest extends ZKTestCase {
         while(qu.getPeer(index).peer.follower == null) {
             index++;
         }
-        LOG.info("Connecting to follower:" + index);
+        LOG.info("Connecting to follower: {}", index);
 
         TestableZooKeeper zk =
                 createTestableClient("localhost:" + qu.getPeer(index).peer.getClientPort());
@@ -577,7 +578,7 @@ public class FollowerResyncConcurrencyTest extends ZKTestCase {
         while(qu.getPeer(index).peer.follower == null) {
             index++;
         }
-        LOG.info("Connecting to follower:" + index);
+        LOG.info("Connecting to follower: {}", index);
 
         TestableZooKeeper zk1 = createTestableClient(
                 "localhost:" + qu.getPeer(index).peer.getClientPort());

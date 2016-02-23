@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
 import org.apache.zookeeper.AsyncCallback;
 import org.apache.zookeeper.AsyncCallback.MultiCallback;
 import org.apache.zookeeper.CreateMode;
@@ -51,10 +50,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RunWith(Parameterized.class)
 public class MultiTransactionTest extends ClientBase {
-    private static final Logger LOG = Logger.getLogger(MultiTransactionTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MultiTransactionTest.class);
 
     private ZooKeeper zk;
     private ZooKeeper zk_chroot;
@@ -555,7 +556,7 @@ public class MultiTransactionTest extends ClientBase {
             Assert.fail("Should have thrown a KeeperException for invalid version");
         } catch (KeeperException e) {
             //PASS
-            LOG.error("STACKTRACE: " + e);
+            LOG.error("STACKTRACE: ", e);
         }
 
         Assert.assertNull(zk.exists("/multi", null));
@@ -635,10 +636,10 @@ public class MultiTransactionTest extends ClientBase {
 
         Assert.assertNotNull(results);
         for (OpResult r : results) {
-            LOG.info("RESULT==> " + r);
+            LOG.info("RESULT==> ", r);
             if (r instanceof ErrorResult) {
                 ErrorResult er = (ErrorResult) r;
-                LOG.info("ERROR RESULT: " + er + " ERR=>" + KeeperException.Code.get(er.getErr()));
+                LOG.info("ERROR RESULT: {} ERR=> {}", er, KeeperException.Code.get(er.getErr()));
             }
         }
     }

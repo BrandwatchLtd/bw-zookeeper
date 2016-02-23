@@ -21,7 +21,6 @@ package org.apache.zookeeper.server;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.KeeperException.ConnectionLossException;
@@ -34,12 +33,14 @@ import org.apache.zookeeper.test.QuorumUtil;
 import org.apache.zookeeper.test.QuorumUtil.PeerStruct;
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Verify ZOOKEEPER-1277 - ensure that we handle epoch rollover correctly.
  */
 public class ZxidRolloverTest extends TestCase {
-    private static final Logger LOG = Logger.getLogger(ZxidRolloverTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ZxidRolloverTest.class);
 
     private QuorumUtil qu;
     private ZooKeeperServer zksLeader;
@@ -54,7 +55,7 @@ public class ZxidRolloverTest extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
-        LOG.info("STARTING " + getName());
+        LOG.info("STARTING {}", getName());
 
         // set the snap count to something low so that we force log rollover
         // and verify that is working as part of the epoch rollover.
@@ -222,7 +223,7 @@ public class ZxidRolloverTest extends TestCase {
      * wait for the clients to be re-connected after the re-election
      */
     private int createNodes(ZooKeeper zk, int start, int count) throws Exception {
-        LOG.info("Creating nodes " + start + " thru " + (start + count));
+	LOG.info("Creating nodes {} thru {}", start, (start + count));
         int j = 0;
         try {
             for (int i = start; i < start + count; i++) {
@@ -241,10 +242,10 @@ public class ZxidRolloverTest extends TestCase {
      * caused the roll-over, did not.
      */
     private void checkNodes(ZooKeeper zk, int start, int count) throws Exception {
-        LOG.info("Validating nodes " + start + " thru " + (start + count));
+        LOG.info("Validating nodes {} thru {}", start, (start + count));
         for (int i = start; i < start + count; i++) {
             assertNotNull(zk.exists("/foo" + i, false));
-            LOG.error("Exists zxid:" + Long.toHexString(zk.exists("/foo" + i, false).getCzxid()));
+            LOG.error("Exists zxid: {}", Long.toHexString(zk.exists("/foo" + i, false).getCzxid()));
         }
         assertNull(zk.exists("/foo" + (start + count), false));
     }

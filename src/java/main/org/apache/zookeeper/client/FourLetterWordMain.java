@@ -18,7 +18,6 @@
 
 package org.apache.zookeeper.client;
 
-import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,10 +28,13 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class FourLetterWordMain {
     //in milliseconds, socket should connect/read within this period otherwise SocketTimeoutException
     private static final int DEFAULT_SOCKET_TIMEOUT = 5000;
-    protected static final Logger LOG = Logger.getLogger(FourLetterWordMain.class);
+    protected static final Logger LOG = LoggerFactory.getLogger(FourLetterWordMain.class);
     
     /**
      * Send the 4letterword
@@ -59,7 +61,7 @@ public class FourLetterWordMain {
     public static String send4LetterWord(String host, int port, String cmd, int timeout)
             throws IOException
     {
-        LOG.info("connecting to " + host + " " + port);
+	LOG.info("connecting to {}:{}", host, port);
         Socket sock = new Socket();
         InetSocketAddress hostaddress= host != null ? new InetSocketAddress(host, port) :
             new InetSocketAddress(InetAddress.getByName(null), port);
