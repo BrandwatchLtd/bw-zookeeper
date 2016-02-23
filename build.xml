@@ -170,7 +170,7 @@ xmlns:maven="antlib:org.apache.maven.artifact.ant">
     <property name="cppunit.m4" value="/usr/share/aclocal"/>
 
     <!-- packaging property set -->
-    <property name="package.release" value="1"/>
+    <property name="package.release" value="bwbuild${env.BUILD_NUMBER}"/>
     <property name="package.prefix" value="/opt"/>
     <property name="package.conf.dir" value="/opt/${final.name}/conf"/>
     <property name="package.log.dir" value="/var/log/zookeeper"/>
@@ -1035,7 +1035,7 @@ xmlns:maven="antlib:org.apache.maven.artifact.ant">
           <replacetokens>
             <token key="final.name" value="${final.name}" />
             <token key="version" value="${rpm.version}" />
-            <token key="package.release" value="${package.release}" />
+	    <token key="package.release" value="${package.release}" />
             <token key="package.build.dir" value="${package.build.dir}" />
             <token key="package.prefix" value="${package.prefix}" />
             <token key="package.conf.dir" value="${package.conf.dir}" />
@@ -1063,7 +1063,7 @@ xmlns:maven="antlib:org.apache.maven.artifact.ant">
       <subant target="deb">
         <!--Pass down the version in case its needed again and the target
             distribution directory so contribs know where to install to.-->
-        <property name="version" value="${version}"/>
+	<property name="version" value="${version}"/>
         <property name="dist.dir" value="${dist.dir}"/>
         <fileset file="${contrib.dir}/build.xml"/>
         <fileset file="${recipes.dir}/build.xml"/>
@@ -1091,8 +1091,8 @@ xmlns:maven="antlib:org.apache.maven.artifact.ant">
         <filterchain>
           <replacetokens>
             <token key="final.name" value="${final.name}" />
-            <token key="version" value="${version}" />
-            <token key="package.release" value="${package.release}" />
+	    <token key="version" value="${version}-${package.release}" />
+	    <token key="package.release" value="${package.release}" />
             <token key="package.build.dir" value="${package.build.dir}" />
             <token key="package.prefix" value="${package.prefix}" />
             <token key="package.conf.dir" value="${package.conf.dir}" />
