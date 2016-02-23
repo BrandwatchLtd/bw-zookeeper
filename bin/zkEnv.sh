@@ -23,7 +23,7 @@
 # or the conf directory that is
 # a sibling of this script's directory
 
-ZOOBINDIR="${ZOOBINDIR:-/usr/bin}"
+ZOOBINDIR="${ZOOBINDIR:-/opt/zookeeper/bin}"
 ZOOKEEPER_PREFIX="${ZOOBINDIR}/.."
 
 if [ "x$ZOOCFGDIR" = "x" ]
@@ -77,8 +77,8 @@ done
 
 #make it work in the binary package
 #(use array for LIBPATH to account for spaces within wildcard expansion)
-if [ -e "${ZOOKEEPER_PREFIX}"/share/zookeeper/zookeeper-*.jar ]; then
-  LIBPATH=("${ZOOKEEPER_PREFIX}"/share/zookeeper/*.jar)
+if [ -e "${ZOOKEEPER_PREFIX}"/share/zookeeper-*.jar ]; then
+  LIBPATH=("${ZOOKEEPER_PREFIX}"/share/*.jar)
 else
   #release tarball format
   for i in "$ZOOBINDIR"/../zookeeper-*.jar
