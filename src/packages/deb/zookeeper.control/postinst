@@ -15,9 +15,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-bash /usr/sbin/update-zookeeper-env.sh \
-  --prefix=/usr \
-  --conf-dir=/etc/zookeeper \
-  --log-dir=/var/log/zookeeper \
-  --pid-dir=/var/run/zookeeper \
-  --var-dir=/var/lib/zookeeper
+#bash /usr/sbin/update-zookeeper-env.sh \
+#  --prefix=/usr \
+#  --conf-dir=/etc/zookeeper \
+#  --log-dir=/var/log/zookeeper \
+#  --pid-dir=/var/run/zookeeper \
+#  --var-dir=/var/lib/zookeeper

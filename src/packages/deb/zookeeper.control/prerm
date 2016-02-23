@@ -15,10 +15,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-/etc/init.d/zookeeper stop 2>/dev/null >/dev/null
-bash /usr/sbin/update-zookeeper-env.sh \
-  --prefix=/usr \
-  --conf-dir=/etc/zookeeper \
-  --log-dir=/var/log/zookeeper \
-  --pid-dir=/var/run/zookeeper \
-  --uninstal
+#/etc/init.d/zookeeper stop 2>/dev/null >/dev/null
+#bash /usr/sbin/update-zookeeper-env.sh \
+#  --prefix=/usr \
+#  --conf-dir=/etc/zookeeper \
+#  --log-dir=/var/log/zookeeper \
+#  --pid-dir=/var/run/zookeeper \
+#  --uninstal
