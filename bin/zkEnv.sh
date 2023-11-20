@@ -25,7 +25,7 @@
 # Or you can specify the ZOOCFGDIR using the
 # '--config' option in the command line.
 
-ZOOBINDIR="${ZOOBINDIR:-/usr/bin}"
+ZOOBINDIR="${ZOOBINDIR:-/opt/zookeeper/bin}"
 ZOOKEEPER_PREFIX="${ZOOBINDIR}/.."
 
 #check to see if the conf dir is given as an optional argument
@@ -89,8 +89,8 @@ done
 
 #make it work in the binary package
 #(use array for LIBPATH to account for spaces within wildcard expansion)
-if ls "${ZOOKEEPER_PREFIX}"/share/zookeeper/zookeeper-*.jar > /dev/null 2>&1; then 
-  LIBPATH=("${ZOOKEEPER_PREFIX}"/share/zookeeper/*.jar)
+if ls "${ZOOKEEPER_PREFIX}"/share/zookeeper-*.jar > /dev/null 2>&1; then 
+  LIBPATH=("${ZOOKEEPER_PREFIX}"/share/*.jar)
 else
   #release tarball format
   for i in "$ZOOBINDIR"/../zookeeper-*.jar

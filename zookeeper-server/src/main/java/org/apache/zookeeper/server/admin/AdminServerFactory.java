@@ -38,7 +38,7 @@ public class AdminServerFactory {
      * to pull in Jetty with ZooKeeper.
      */
     public static AdminServer createAdminServer() {
-        if (!"false".equals(System.getProperty("zookeeper.admin.enableServer"))) {
+        if (!"false".equals(System.getProperty("zookeeper.admin.enableServer", "false"))) {
             try {
                 Class<?> jettyAdminServerC = Class.forName("org.apache.zookeeper.server.admin.JettyAdminServer");
                 Object adminServer = jettyAdminServerC.getConstructor().newInstance();

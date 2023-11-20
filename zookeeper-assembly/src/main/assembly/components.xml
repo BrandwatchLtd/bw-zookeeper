@@ -23,17 +23,6 @@
   <!-- Resources that both bin and source package include -->
   <fileSets>
     <fileSet>
-      <directory>${project.basedir}/..</directory>
-      <outputDirectory>.</outputDirectory>
-      <includes>
-        <include>NOTICE.txt</include>
-        <include>LICENSE.txt</include>
-        <include>README.md</include>
-        <include>README_packaging.md</include>
-      </includes>
-      <fileMode>${rw.file.permission}</fileMode>
-    </fileSet>
-    <fileSet>
       <directory>${project.basedir}/../conf</directory>
       <outputDirectory>conf</outputDirectory>
       <fileMode>${rw.file.permission}</fileMode>
@@ -41,6 +30,10 @@
     </fileSet>
     <fileSet>
       <directory>${project.basedir}/../bin</directory>
+      <excludes>
+        <exclude>*.txt</exclude>
+        <exclude>*.cmd</exclude>
+      </excludes>
       <outputDirectory>bin</outputDirectory>
       <fileMode>${rwx.file.permission}</fileMode>
       <directoryMode>${rwx.file.permission}</directoryMode>

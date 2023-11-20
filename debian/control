@@ -1,0 +1,21 @@
+Source: zookeeper
+Section: java
+Priority: optional
+Maintainer: Robert Cardell <robert.cardell@brandwatch.com>
+Build-Depends:
+ maven,
+ debhelper-compat (= 13)
+Homepage: https://zookeeper.apache.org
+Rules-Requires-Root: no
+
+Package: zookeeper
+Architecture: all
+Depends:
+ ${misc:Depends}
+Description: High-performance coordination service for distributed applications
+ ZooKeeper is a centralized, reliable, service for maintaining configuration
+ information, naming, providing distributed synchronization, and group
+ services. All of these kinds of services are used in some form or another by
+ distributed applications.
+ .
+ This is Brandwatch's internal build of Zookeeper.

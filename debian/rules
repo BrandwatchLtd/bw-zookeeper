@@ -1,0 +1,31 @@
+#!/usr/bin/make -f
+
+export LC_ALL=C.UTF-8
+export JAVA_HOME=/usr/lib/jvm/default-java
+
+# Where Maven "assembles" the build output
+ASSM_DIR = zookeeper-assembly/target/zookeeper-3.8.3/zookeeper-3.8.3
+
+# Folder which gets packed up for Debian
+PACK_DIR = debian/zookeeper/opt/zookeeper-3.8.3
+
+%:
+	dh $@
+
+clean:
+	mvn clean -Pfull-build
+
+binary:
+
+install:
+	mvn package -DskipTests
+	install -d $(PACK_DIR)/bin
+	install -d $(PACK_DIR)/conf
+	install -d $(PACK_DIR)/lib
+	install -d $(PACK_DIR)/libexec
+	install -d $(PACK_DIR)/sbin
+	install -m 755 $(ASSM_DIR)/bin/zkCli.sh     $(PACK_DIR)/bin/
+	install -m 755 $(ASSM_DIR)/bin/zkServer.sh  $(PACK_DIR)/sbin/
+	install -m 755 $(ASSM_DIR)/bin/zkEnv.sh     $(PACK_DIR)/libexec/
+	install -m 644 -t $(PACK_DIR)/conf  $(ASSM_DIR)/conf/*
+	install -m 644 -t $(PACK_DIR)/lib   $(ASSM_DIR)/lib/*.jar
