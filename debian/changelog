@@ -1,4 +1,4 @@
-zookeeper (3.8.3-bw1-1) unstable; urgency=low
+zookeeper (3.8.3-bwbuild1-1) unstable; urgency=low
 
   * Initial update to ZooKeeper 3.8.3
 
