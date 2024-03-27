@@ -21,7 +21,7 @@ jobs:
         java-version: 11
 
     - run: |
-        echo "MAKE_ARGS=BUILD${GITHUB_RUN_NUMBER} ZOOKEEPER_VERSION=${ZK_VERSION} GITHUB_ENV=${GITHUB_ENV}" >> $GITHUB_ENV
+        echo "MAKE_ARGS=BUILD=${GITHUB_RUN_NUMBER} ZOOKEEPER_VERSION=${ZK_VERSION} GITHUB_ENV=${GITHUB_ENV}" >> $GITHUB_ENV
 
     - name: Build package
       run: make package
