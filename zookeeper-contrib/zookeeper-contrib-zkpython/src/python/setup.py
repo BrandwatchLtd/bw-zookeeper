@@ -19,7 +19,7 @@ from distutils.core import setup, Extension
 zookeeper_basedir = "../../../"
 
 zookeepermodule = Extension("zookeeper",
-                            sources=["zookeeper-client/zookeeper-client-c/zookeeper.c"],
+                            sources=["/bw-zookeeper/zookeeper-client/zookeeper-client-c/src/zookeeper.c"],
                             include_dirs=[zookeeper_basedir + "/zookeeper-client/zookeeper-client-c/include",
                                           zookeeper_basedir + "/build/c",
                                           zookeeper_basedir + "/zookeeper-client/zookeeper-client-c/generated"],

@@ -556,7 +556,7 @@ int main(int argc, char **argv) {
                   sizeof(cmd));
           return 2;
         }
-        strncpy(cmd, argv[2]+4, sizeof(cmd));
+        strncpy(cmd, argv[2]+4, sizeof(cmd)-1);
         batchMode=1;
         fprintf(stderr,"Batch mode: %s\n",cmd);
       }else{
